@@ -68,7 +68,7 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link to="/" className="logo">
-        <span>KOMIK</span>
+        <span>EJABACA</span>
       </Link>
 
       <div className={`navLinks ${isMobileMenuOpen ? 'open' : ''}`}>
