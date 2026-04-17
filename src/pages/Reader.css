@@ -1,0 +1,101 @@
+.readerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.readerIconButton {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.readerSettings {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  justify-content: center;
+}
+
+.settingButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all var(--transition-speed);
+}
+
+.settingButton:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.readerContainer {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.chapterPages {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.chapterImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.readerFooter {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 20px;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  max-width: 900px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.readerFooter .btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .readerHeader {
+    padding: 10px 15px;
+  }
+
+  .readerHeader h2 {
+    font-size: 18px;
+  }
+
+  .readerFooter {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,125 @@
+.detailContainer {
+  margin-top: 20px;
+}
+
+.detailHeader {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.detailCover {
+  width: 200px;
+}
+
+.detailCover img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.detailInfo h1 {
+  margin: 0 0 20px 0;
+  font-size: 28px;
+}
+
+.detailMeta {
+  margin: 8px 0;
+  color: var(--text-secondary);
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.genreTag {
+  background-color: var(--bg-secondary);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--primary-color);
+  border: 1px solid var(--border-color);
+}
+
+.synopsis {
+  background-color: var(--bg-secondary);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 40px;
+}
+
+.synopsis h2 {
+  margin-top: 0;
+}
+
+.synopsis p {
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.chaptersSection {
+  margin-bottom: 30px;
+}
+
+.chaptersSection h2 {
+  margin-bottom: 15px;
+}
+
+.chapterList {
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.chapterItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+}
+
+.chapterItem:hover {
+  background-color: var(--bg-primary);
+}
+
+.chapterItem:last-child {
+  border-bottom: none;
+}
+
+.chapterTitle {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chapterDate {
+  margin: 5px 0 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .detailHeader {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .detailCover {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .detailCover img {
+    width: 100%;
+  }
+}
