@@ -1,13 +1,26 @@
 import axios from 'axios';
 
-const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-const API_BASE = `${CORS_PROXY}https://api.vharasc.dev/api/v1/komiku`;
+const API_BASE = '/api/proxy';
 const API_KEY = 'ak_rCTGDq_ut_1aMDQBxkTy-J8TM9HDAqJX';
 
-// Axios instance untuk Vharasc API
+// Axios instance untuk Vharasc API via Proxy
 const vharasAPI = axios.create({
   baseURL: API_BASE,
   timeout: 10000,
+});
+
+// Add request interceptor to transform endpoint format
+vharasAPI.interceptors.request.use(request => {
+  // Extract endpoint from URL (e.g., '/popular' -> 'popular')
+  const endpoint = request.url.split('?')[0].substring(1); // Remove leading /
+  const queryString = request.url.split('?')[1] || '';
+  
+  // Reconstruct URL as ?endpoint=...&other=params
+  if (endpoint) {
+    request.url = `?endpoint=${endpoint}${queryString ? '&' + queryString : ''}`;
+  }
+  
+  return request;
 });
 
 // Response transformer untuk Vharasc API
@@ -120,7 +133,7 @@ export const api = {
   getTrendingManga: async (page = 1) => {
     try {
       console.log('🔄 Fetching trending manga...');
-      const res = await vharasAPI.get(`/popular?sorttime=all&page=${page}&apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/popular?sorttime=all&page=${page}`);
       console.log('✅ Raw response:', res.data);
       console.log('📊 Response.data.data:', res.data?.data);
       console.log('✅ Trending response OK, items:', res.data?.data?.length);
@@ -131,7 +144,7 @@ export const api = {
       // Fallback to home endpoint
       try {
         console.log('🔄 Trying fallback /home endpoint...');
-        const fallbackRes = await vharasAPI.get(`/home?apikey=${API_KEY}`);
+        const fallbackRes = await vharasAPI.get(`/home`);
         if (fallbackRes.data?.data?.ranking) {
           const ranking = fallbackRes.data.data.ranking || [];
           console.log('✅ Fallback success, items:', ranking.length);
@@ -148,7 +161,7 @@ export const api = {
   getLatestManga: async (page = 1) => {
     try {
       console.log('🔄 Fetching latest manga...');
-      const res = await vharasAPI.get(`/latest?page=${page}&apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/latest?page=${page}`);
       console.log('✅ Latest response OK, items:', res.data?.data?.length);
       return transformVharasResponse(res);
     } catch (error) {
@@ -161,7 +174,7 @@ export const api = {
   searchManga: async (keyword, page = 1) => {
     try {
       console.log('🔄 Searching manga:', keyword);
-      const res = await vharasAPI.get(`/search?q=${encodeURIComponent(keyword)}&page=${page}&apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/search?q=${encodeURIComponent(keyword)}&page=${page}`);
       console.log('✅ Search response OK, items:', res.data?.data?.length);
       return transformVharasResponse(res);
     } catch (error) {
@@ -173,7 +186,7 @@ export const api = {
   // Get Manga Detail
   getMangaDetail: async (slug) => {
     try {
-      const res = await vharasAPI.get(`/detail/${slug}?apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/detail/${slug}`);
       // Handle different response structures
       if (res.data?.data) {
         // If detail endpoint returns wrapped data
@@ -193,7 +206,7 @@ export const api = {
   getMangaChapters: async (slug) => {
     try {
       console.log('🔄 Fetching chapters for:', slug);
-      const res = await vharasAPI.get(`/detail/${slug}?apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/detail/${slug}`);
       
       // Chapters are at response.data.data.chapters (3-level nesting)
       const chapters = res.data?.data?.chapters || res.data?.chapters || [];
@@ -214,7 +227,7 @@ export const api = {
   // Get Chapter Images/Pages - uses /read/:chapter_slug endpoint
   getChapterPages: async (slug, chapterSlug) => {
     try {
-      const res = await vharasAPI.get(`/read/${chapterSlug}?apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/read/${chapterSlug}`);
       // Response structure: { data: { images: [...], ... } }
       return res;
     } catch (error) {
@@ -226,7 +239,7 @@ export const api = {
   // Get Genre List
   getGenres: async () => {
     try {
-      const res = await vharasAPI.get(`/list-genre?apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/list-genre`);
       return res.data?.data || [];
     } catch (error) {
       console.warn('Genres fetch failed:', error.message);
@@ -237,7 +250,7 @@ export const api = {
   // Get Manga by Genre
   getMangaByGenre: async (genreSlug, page = 1) => {
     try {
-      const res = await vharasAPI.get(`/genre/${genreSlug}?page=${page}&apikey=${API_KEY}`);
+      const res = await vharasAPI.get(`/genre/${genreSlug}?page=${page}`);
       return transformVharasResponse(res);
     } catch (error) {
       console.warn('Genre fetch failed:', error.message);
