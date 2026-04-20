@@ -11,13 +11,17 @@ const vharasAPI = axios.create({
 
 // Add request interceptor to transform endpoint format
 vharasAPI.interceptors.request.use(request => {
-  // Extract endpoint from URL (e.g., '/popular' -> 'popular')
-  const endpoint = request.url.split('?')[0].substring(1); // Remove leading /
-  const queryString = request.url.split('?')[1] || '';
+  // URL format: /endpoint?params
+  // Need to convert to: ?endpoint=endpoint&params
   
-  // Reconstruct URL as ?endpoint=...&other=params
-  if (endpoint) {
-    request.url = `?endpoint=${endpoint}${queryString ? '&' + queryString : ''}`;
+  if (request.url && request.url.startsWith('/')) {
+    const [pathPart, queryPart] = request.url.split('?');
+    const endpoint = pathPart.substring(1); // Remove leading /
+    
+    if (endpoint) {
+      // Reconstruct URL as query parameters
+      request.url = `?endpoint=${endpoint}${queryPart ? '&' + queryPart : ''}`;
+    }
   }
   
   return request;

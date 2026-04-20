@@ -23,28 +23,29 @@ export default async function handler(req, res) {
     const url = `${API_BASE}/${endpoint}`;
     
     // Build query string with API key
-    const queryString = new URLSearchParams({
+    const qs = new URLSearchParams({
       ...queryParams,
       apikey: API_KEY,
     }).toString();
 
-    const fullUrl = `${url}?${queryString}`;
+    const fullUrl = qs ? `${url}?${qs}` : url;
     console.log(`[PROXY] GET ${fullUrl}`);
 
-    // Forward the request to the actual API
+    // Forward the request using fetch
     const response = await fetch(fullUrl, {
       method: 'GET',
       headers: {
-        'User-Agent': 'Mozilla/5.0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
       },
     });
 
     if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
+      const errorData = await response.text();
+      throw new Error(`API returned ${response.status}: ${errorData}`);
     }
 
     const data = await response.json();
-    console.log(`[PROXY] Success: ${response.status}`);
+    console.log(`[PROXY] Success: ${response.status} - Got data`);
 
     // Return the response with CORS headers
     res.status(200).json(data);
