@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const CORS_PROXY = 'https://corsproxy.io/?';
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 const API_BASE = `${CORS_PROXY}https://api.vharasc.dev/api/v1/komiku`;
 const API_KEY = 'ak_rCTGDq_ut_1aMDQBxkTy-J8TM9HDAqJX';
 
