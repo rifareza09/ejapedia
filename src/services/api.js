@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_BASE = 'https://api.vharasc.dev/api/v1/komiku';
+const CORS_PROXY = 'https://corsproxy.io/?';
+const API_BASE = `${CORS_PROXY}https://api.vharasc.dev/api/v1/komiku`;
 const API_KEY = 'ak_rCTGDq_ut_1aMDQBxkTy-J8TM9HDAqJX';
 
 // Axios instance untuk Vharasc API
